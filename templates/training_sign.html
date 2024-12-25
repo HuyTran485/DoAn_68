@@ -19,7 +19,7 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-image: url("static/gym.jpg");
+  background-image: url("static/gym2.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -151,21 +151,16 @@ button:hover {
 <body>
     <section>
         <form method="POST">
-            <h1>Login</h1>
+            <h1>TRACK SCHEDULE</h1>
             {% if error %}
                 <p><strong>Error:</strong> {{ error }}
             {% endif %}
             <div class= "inputbox">
                 <ion-icon name="mail-outline"></ion-icon>
-                <input type="text" name="account" value = "{{request.form.account }}" required>
-                <label >Admin account</label>
+                <input type="text" name="uid" value = "{{request.form.uid}}" required>
+                <label >Uid</label>
             </div>
-            <div class="inputbox">
-                <ion-icon name="lock-closed-outline"></ion-icon>
-                <input type="password" name="password" value = "{{request.form.password }}" required>
-                <label >Password</label>
-            </div>
-            <button>Log in</button>
+            <button>Submit</button>
         </form>
     </section>
 </body>

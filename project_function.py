@@ -25,7 +25,7 @@ def insertData(full_name, dob, gender, train_time, PtInfo, phoneNumber, uid):
         'Activation_date':f'{date_string}',
         'PhoneNumber': f'{phoneNumber}'
     }
-    ref.child(f'ID: {uid}').set(data)
+    ref.child(f'{uid}').set(data)
     print("Data pushed successfully")
 def deleteData():
     ref = db.reference('/now_UID')
@@ -46,3 +46,23 @@ def check_data():
     ref = db.reference('now_UID')
     data = ref.get()
     return data
+#C3CD25E0
+def insertTT(uid):
+    now = datetime.now()
+    date_string = now.strftime("%d-%m-%Y %H:%M:%S")
+    ref = db.reference(f'{uid}/Tracking-log')
+    data = {
+        'TimeStamp':f'{date_string}'
+    }
+    ref.set(data)
+
+def check_id_exists(id_to_check):
+    # Lấy toàn bộ dữ liệu
+    ref = db.reference('/')
+    data = ref.get()
+    print(data)
+    # Kiểm tra ID
+    if data and id_to_check in data:
+        return True
+    return False
+# print(check_id_exists("C3CD25E0"))

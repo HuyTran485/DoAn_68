@@ -1,9 +1,11 @@
 from flask import Flask, render_template, Response, request, jsonify, redirect, url_for, session, make_response
 import time
 from datetime import datetime
-from project_function import insertData, check_pass, generate_random_string, check_data, deleteData
+from project_function import insertData, check_pass, generate_random_string, check_data, deleteData, check_id_exists
 import threading
 app = Flask(__name__)
+
+#-----------------------------Web-----------------------------------------------
 @app.route('/', methods=['POST', 'GET'])
 def sign_in():
     global random_id
@@ -52,10 +54,19 @@ def submit_data():
     except Exception as e:
         # Phản hồi nếu có lỗi xảy ra
         return jsonify({'status': 'error', 'message': str(e)}), 500
-
-def LO():
-    #This is a Git Test
-    print("LOOOOOOOOOOOO")
-    return True
+@app.route('/check_uid', methods=['POST','GET'])
+def check_uid():
+    error = None
+    if request.method == 'POST':
+        uid = request.form['uid']
+        if check_id_exists(uid):
+            return redirect(url_for('schedule'))
+        else:
+            error = 'Uid was not exist. Please try again or sign in at registration counter!'
+    return render_template('training_sign.html', error=error)
+@app.route('/schedule')
+def schedule():
+    return render_template('test.html')
+#--------------------------------------End------------------------------------------
 if __name__ == "__main__":
     app.run()

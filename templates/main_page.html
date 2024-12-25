@@ -124,6 +124,7 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
     const dob = formData.get('dob');
     const gender = formData.get('gender');
     const months = formData.get('months');
+    const phoneNumber = formData.get('phoneNumber');
     const ptInfo = formData.get('ptInfo');
 
     // Tạo đối tượng dữ liệu gửi lên server Flask
@@ -133,6 +134,7 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
         gender,
         months,
         ptInfo,
+        phoneNumber,
         uid   // Dữ liệu từ Flask
     };
 
