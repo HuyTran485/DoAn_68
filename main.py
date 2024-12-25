@@ -55,6 +55,7 @@ def submit_data():
 
 def LO():
     #This is a Git Test
+    print("LOOOOOOOOOOOO")
     return True
 if __name__ == "__main__":
     app.run()
