@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Người Dùng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #serverData {
+            background-color: #f1f1f1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thông Tin Người Dùng</h1>
+        <form id="userForm">
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên" required>
+
+            <label for="dob">Ngày tháng năm sinh:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="gender">Giới tính:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Chọn giới tính</option>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác</option>
+            </select>
+
+            <label for="months">Số tháng tập:</label>
+            <input type="number" id="months" name="months" min="0" placeholder="Nhập số tháng tập" required>
+
+            <label for="ptInfo">Thông tin PT riêng (nếu có):</label>
+            <textarea id="ptInfo" name="ptInfo" placeholder="Nhập thông tin PT riêng"></textarea>
+
+            <button type="submit">Gửi</button>
+        </form>
+
+        <!-- Ô để hiển thị dữ liệu từ Firebase -->
+        <label for="serverData">Dữ liệu từ server:</label>
+        <div id="serverData">Chưa có dữ liệu từ server.</div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
+
+    <script>
+        // Cấu hình Firebase
+        const firebaseConfig = {
+  apiKey: "AIzaSyCklZQC8IQ2N1NMdDtXVev4Ic0dojcRz4U",
+  authDomain: "iot-gym-ccbc3.firebaseapp.com",
+  databaseURL: "https://iot-gym-ccbc3-default-rtdb.firebaseio.com",
+  projectId: "iot-gym-ccbc3",
+  storageBucket: "iot-gym-ccbc3.firebasestorage.app",
+  messagingSenderId: "236679873998",
+  appId: "1:236679873998:web:bd07cff8920c544524179f"
+};
+
+        // Khởi tạo Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database(app);
+
+        // Lắng nghe dữ liệu từ Firebase
+        const serverDataDiv = document.getElementById('serverData');
+        const dataRef = firebase.database().ref('serverData'); // Đường dẫn trong database
+
+        dataRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                serverDataDiv.textContent = data; // Hiển thị dữ liệu vào ô
+            } else {
+                serverDataDiv.textContent = "Chưa có dữ liệu từ server.";
+            }
+        });
+
+        // Submit form
+        document.getElementById('userForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const dob = formData.get('dob');
+            const gender = formData.get('gender');
+            const months = formData.get('months');
+            const ptInfo = formData.get('ptInfo');
+
+            // Gửi dữ liệu lên Firebase
+            dataRef.set({
+                name,
+                dob,
+                gender,
+                months,
+                ptInfo
+            });
+        });
+    </script>
+</body>
+</html>

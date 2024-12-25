@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Người Dùng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, textarea {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        select
+        {
+            width: 99%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thông Tin Người Dùng</h1>
+        <form id="userForm" method="POST">
+            <label for="name">Tên:</label>
+            <input type="text" id="name" name="name" placeholder="Nhập tên" required>
+
+            <label for="dob">Ngày tháng năm sinh:</label>
+            <input type="date" id="dob" name="dob" required>
+
+            <label for="gender">Giới tính:</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Chọn giới tính</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="LGBT">Khác</option>
+            </select>
+
+            <label for="months">Số tháng tập:</label>
+            <input type="number" id="months" name="months" min="0" placeholder="Nhập số tháng tập" required>
+
+            <label for="ptInfo">Thông tin PT riêng (nếu có):</label>
+            <textarea id="ptInfo" name="ptInfo" placeholder="Nhập thông tin PT riêng"></textarea>
+
+            <label for="phoneNumber">Số điện thoại:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Nhập số điện thoại" required>
+
+            <label for="uid">ID:</label>
+            <div id="uid">Đang chờ dữ liệu từ server...</div>
+            <br>
+            <button type="submit">Gửi</button>
+        </form>
+    </div>
+<script>
+const flaskDataDiv = document.getElementById('uid');
+
+// Gửi yêu cầu GET đến server Flask để lấy dữ liệu
+function fetchFlaskData() {
+    fetch('/get-data') // Địa chỉ server Flask của bạn
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                flaskDataDiv.textContent = data.data;
+            } else {
+                flaskDataDiv.textContent = "Không có dữ liệu từ Flask.";
+            }
+        })
+        .catch(error => {
+            flaskDataDiv.textContent = "Lỗi khi lấy dữ liệu từ server Flask.";
+            console.error('Error fetching data:', error);
+        });
+}
+
+// Gọi hàm để lấy dữ liệu mỗi khi tải trang
+setInterval(fetchFlaskData,1000);
+document.getElementById('userForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    const uid = document.getElementById('uid').textContent;
+
+    const formData = new FormData(this);
+    const name = formData.get('name');
+    const dob = formData.get('dob');
+    const gender = formData.get('gender');
+    const months = formData.get('months');
+    const ptInfo = formData.get('ptInfo');
+
+    // Tạo đối tượng dữ liệu gửi lên server Flask
+    const dataToSend = {
+        name,
+        dob,
+        gender,
+        months,
+        ptInfo,
+        uid   // Dữ liệu từ Flask
+    };
+
+    // Gửi dữ liệu lên server Flask qua Fetch API (sử dụng phương thức POST)
+    fetch('/submit-data', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Dữ liệu đã được gửi thành công!');
+        } else {
+            alert('Có lỗi xảy ra khi gửi dữ liệu!');
+        }
+    })
+    .catch(error => {
+        alert('Lỗi kết nối với server');
+        console.error('Error:', error);
+    });
+});
+</script>
+</body>
+</html>
