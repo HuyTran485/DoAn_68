@@ -54,6 +54,7 @@ def submit_data():
         return jsonify({'status': 'error', 'message': str(e)}), 500
 
 def LO():
+    #This is a Git Test
     return True
 if __name__ == "__main__":
     app.run()
