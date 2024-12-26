@@ -1,5 +1,5 @@
 import firebase_admin
-from firebase_admin import db, credentials
+from firebase_admin import credentials
 from firebase_admin import db
 from datetime import datetime
 import json
@@ -54,7 +54,7 @@ def insertTT(uid):
     data = {
         'TimeStamp':f'{date_string}'
     }
-    ref.set(data)
+    ref.push(data)
 
 def check_id_exists(id_to_check):
     # Lấy toàn bộ dữ liệu
@@ -66,3 +66,14 @@ def check_id_exists(id_to_check):
         return True
     return False
 # print(check_id_exists("C3CD25E0"))
+#insertTT("C3CD25E0")
+def getTimeStamp(uid):
+    timeList = []
+    ref = db.reference(f'{uid}/Tracking-log')
+    data = ref.get()
+    for key, value in data.items():
+        for x,y in value.items():
+            timeList.append(y)
+
+    print(timeList)
+#getTimeStamp("C3CD25E0")
