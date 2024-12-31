@@ -11,10 +11,12 @@ cred = credentials.Certificate("json_file.json")
 firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://iot-gym-ccbc3-default-rtdb.firebaseio.com'
 })
-def insertData(full_name, dob, gender, train_time, PtInfo, phoneNumber, uid):
+def insertData(full_name, dob, gender, train_time, PtInfo, phoneNumber, height, weight, desire, uid):
     now = datetime.now()
     date_string = now.strftime("%d-%m-%Y")
     # time_string = now.strftime("%H-%M-%S")
+    date_obj = datetime.strptime(dob, "%Y-%m-%d")
+    dob = date_obj.strftime("%d-%m-%Y")
     ref = db.reference('/')
     data = {
         'Name':f'{full_name}',
@@ -23,9 +25,12 @@ def insertData(full_name, dob, gender, train_time, PtInfo, phoneNumber, uid):
         'TrainPeriod':f'{train_time}',
         'PtInfo':f'{PtInfo}',
         'Activation_date':f'{date_string}',
-        'PhoneNumber': f'{phoneNumber}'
+        'PhoneNumber': f'{phoneNumber}',
+        'Height': f'{height}',
+        'Weight': f'{weight}',
+        'Desire': f'{desire}',
     }
-    ref.child(f'{uid}').set(data)
+    ref.child(f'{uid}').update(data)
     print("Data pushed successfully")
 def deleteData():
     ref = db.reference('/now_UID')

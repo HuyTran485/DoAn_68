@@ -50,7 +50,8 @@ def submit_data():
         data = request.get_json()
         # Kiểm tra hoặc xử lý dữ liệu
         # print("Dữ liệu nhận được:", data["name"], data['dob'], data['gender'], data['months'], data['ptInfo'], data['uid'])
-        insertData(data["name"], data['dob'], data['gender'], data['months'], data['ptInfo'], data['phoneNumber'], data['uid'])
+        insertData(data["name"], data['dob'], data['gender'], data['months'], data['ptInfo'], data['phoneNumber'], data['weight'],
+                   data['height'], data['desire'] ,data['uid'])
         #deleteData()
         # Phản hồi lại thành công
         return jsonify({'status': 'success', 'message': 'Dữ liệu đã được nhận'})

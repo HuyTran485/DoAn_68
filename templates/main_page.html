@@ -87,6 +87,20 @@
             <label for="phoneNumber">Số điện thoại:</label>
             <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Nhập số điện thoại" required>
 
+            <label for="personalHeight">Chiều cao hiện tại (m):</label>
+            <input type="text" id="personalHeight" name="personalHeight" placeholder="Nhập chiều cao" required>
+
+            <label for="personalWeight">Cân nặng hiện tại (kg):</label>
+            <input type="text" id="personalWeight" name="personalWeight" placeholder="Nhập cân nặng" required>
+
+            <label for="desire">Hướng tập luyện:</label>
+            <select id="desire" name="desire" required>
+                <option value="" disabled selected>Chọn Hướng tập luyện</option>
+                <option value="gainW">Tăng cân</option>
+                <option value="losingW">Giảm cân</option>
+                <option value="another">Khác</option>
+            </select>
+
             <label for="uid">ID:</label>
             <div id="uid">Đang chờ dữ liệu từ server...</div>
             <br>
@@ -125,6 +139,9 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
     const gender = formData.get('gender');
     const months = formData.get('months');
     const phoneNumber = formData.get('phoneNumber');
+    const weight = formData.get('personalWeight');
+    const height = formData.get('personalHeight');
+    const desire = formData.get('desire');
     const ptInfo = formData.get('ptInfo');
 
     // Tạo đối tượng dữ liệu gửi lên server Flask
@@ -135,6 +152,9 @@ document.getElementById('userForm').addEventListener('submit', function (e) {
         months,
         ptInfo,
         phoneNumber,
+        weight,
+        height,
+        desire,
         uid   // Dữ liệu từ Flask
     };
 
