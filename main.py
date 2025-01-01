@@ -93,6 +93,7 @@ def get_uid_data():
 
     return jsonify({"status": "success", "table": table})
 
+#This is a test from local PC
 #--------------------------------------End------------------------------------------
 if __name__ == "__main__":
     app.run()
