@@ -3,147 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thông Tin Người Dùng</title>
+    <title>Tracking Table</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f7f7f7;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
         }
-        .container {
-            max-width: 500px;
-            margin: 50px auto;
-            background: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            border-radius: 8px;
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: url('../static/img.jpg') no-repeat center center fixed;
+            background-size: cover;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
         }
-        h1 {
-            text-align: center;
-            color: #333;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-        }
-        button {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
+
+        section {
+            position: relative;
+            max-width: 800px;
+            width: 90%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            padding: 2rem;
             color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 16px;
-            cursor: pointer;
         }
-        button:hover {
-            background-color: #0056b3;
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            color: #ffffff;
         }
-        #serverData {
-            background-color: #f1f1f1;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-size: 14px;
-            color: #333;
-            min-height: 50px;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
         }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .side-tab {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            transition: width 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-top-left-radius: 20px;
+            border-bottom-left-radius: 20px;
+        }
+
+        .side-tab:hover {
+
+            width: 200px;
+        }
+
+        .side-tab a {
+            text-decoration: none;
+            color: white;
+            font-size: 1rem;
+            margin: 1rem 0;
+            white-space: nowrap;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .side-tab a:hover {
+            color: #dc2430;
+        }
+
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Thông Tin Người Dùng</h1>
-        <form id="userForm">
-            <label for="name">Tên:</label>
-            <input type="text" id="name" name="name" placeholder="Nhập tên" required>
-
-            <label for="dob">Ngày tháng năm sinh:</label>
-            <input type="date" id="dob" name="dob" required>
-
-            <label for="gender">Giới tính:</label>
-            <select id="gender" name="gender" required>
-                <option value="" disabled selected>Chọn giới tính</option>
-                <option value="male">Nam</option>
-                <option value="female">Nữ</option>
-                <option value="other">Khác</option>
-            </select>
-
-            <label for="months">Số tháng tập:</label>
-            <input type="number" id="months" name="months" min="0" placeholder="Nhập số tháng tập" required>
-
-            <label for="ptInfo">Thông tin PT riêng (nếu có):</label>
-            <textarea id="ptInfo" name="ptInfo" placeholder="Nhập thông tin PT riêng"></textarea>
-
-            <button type="submit">Gửi</button>
-        </form>
-
-        <!-- Ô để hiển thị dữ liệu từ Firebase -->
-        <label for="serverData">Dữ liệu từ server:</label>
-        <div id="serverData">Chưa có dữ liệu từ server.</div>
+    <section>
+    <h1 style="text-align: center;">Tracking Log</h1>
+        <br>
+    <table>
+        <thead>
+            <tr>
+                <th>NO</th>
+                <th>Date</th>
+                <th>Time Stamp</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Dữ liệu sẽ được thêm vào đây -->
+        </tbody>
+    </table>
+    </section>
+    <!-- Thanh tab dọc bên phải -->
+    <div class="side-tab" id="side-tab">
+        <a href="{{ desire }}">Workout and Nutrition</a>
     </div>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
-
     <script>
-        // Cấu hình Firebase
-        const firebaseConfig = {
-  apiKey: "AIzaSyCklZQC8IQ2N1NMdDtXVev4Ic0dojcRz4U",
-  authDomain: "iot-gym-ccbc3.firebaseapp.com",
-  databaseURL: "https://iot-gym-ccbc3-default-rtdb.firebaseio.com",
-  projectId: "iot-gym-ccbc3",
-  storageBucket: "iot-gym-ccbc3.firebasestorage.app",
-  messagingSenderId: "236679873998",
-  appId: "1:236679873998:web:bd07cff8920c544524179f"
-};
+        async function fetchData() {
+            try {
+                const response = await fetch('/get_uid_data'); // Gọi API Flask
+                const data = await response.json();
 
-        // Khởi tạo Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(app);
-
-        // Lắng nghe dữ liệu từ Firebase
-        const serverDataDiv = document.getElementById('serverData');
-        const dataRef = firebase.database().ref('serverData'); // Đường dẫn trong database
-
-        dataRef.on('value', (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                serverDataDiv.textContent = data; // Hiển thị dữ liệu vào ô
-            } else {
-                serverDataDiv.textContent = "Chưa có dữ liệu từ server.";
+                if (data.status === "success") {
+                    updateTable(data.table);
+                } else {
+                    console.log("No data available");
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-        });
+        }
 
-        // Submit form
-        document.getElementById('userForm').addEventListener('submit', function (e) {
-            e.preventDefault();
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const dob = formData.get('dob');
-            const gender = formData.get('gender');
-            const months = formData.get('months');
-            const ptInfo = formData.get('ptInfo');
+        function updateTable(tableData) {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ""; // Xóa dữ liệu cũ
 
-            // Gửi dữ liệu lên Firebase
-            dataRef.set({
-                name,
-                dob,
-                gender,
-                months,
-                ptInfo
+            tableData.forEach(row => {
+                const tr = document.createElement('tr');
+                row.forEach(cell => {
+                    const td = document.createElement('td');
+                    td.textContent = cell;
+                    tr.appendChild(td);
+                });
+                tableBody.appendChild(tr);
             });
-        });
+        }
+
+        // Cập nhật bảng mỗi 5 giây
+        setInterval(fetchData, 5000);
+
+        // Gọi fetch lần đầu
+        fetchData();
     </script>
 </body>
 </html>

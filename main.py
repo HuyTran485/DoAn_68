@@ -1,7 +1,7 @@
 from flask import Flask, render_template, Response, request, jsonify, redirect, url_for, session, make_response
 import time
 from datetime import datetime
-from project_function import insertData, check_pass, generate_random_string, check_data, deleteData, check_id_exists
+from project_function import insertData, check_pass, generate_random_string, check_data, deleteData, check_id_exists, check_desire
 import threading
 from firebase_admin import db
 app = Flask(__name__)
@@ -70,9 +70,14 @@ def check_uid():
     return render_template('training_sign.html', error=error)
 @app.route('/schedule/<uid>',methods=['POST', 'GET'])
 def schedule(uid):
+    desire = ""
     global global_uid
     global_uid = uid
-    return render_template('check_schedule.html')
+    if (check_desire(uid) == "gainW"):
+        desire = "/GainWeight_Instruction"
+    else:
+        desire = "/LoseWeight_Instruction"
+    return render_template('test.html', desire=desire)
 @app.route('/get_uid_data', methods=['GET'])
 def get_uid_data():
     global global_uid
@@ -92,8 +97,12 @@ def get_uid_data():
         table.append([index, date, time])
 
     return jsonify({"status": "success", "table": table})
-
-#This is a test from local PC
+@app.route('/GainWeight_Instruction',methods=['POST', 'GET'])
+def gainW():
+    return render_template('gainW.html')
+@app.route('/LoseWeight_Instruction',methods=['POST', 'GET'])
+def loseW():
+    return render_template('loseW.html')
 #--------------------------------------End------------------------------------------
 if __name__ == "__main__":
     app.run()

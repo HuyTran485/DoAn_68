@@ -82,3 +82,8 @@ def getTimeStamp(uid):
 
     print(timeList)
 #getTimeStamp("C3CD25E0")
+def check_desire(uid):
+    ref = db.reference(f'{uid}/Desire')
+    data = ref.get()
+    return data
+# print(check_desire("C3CD25E0"))
