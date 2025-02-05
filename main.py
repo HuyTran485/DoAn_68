@@ -91,9 +91,10 @@ def get_uid_data():
 
     # Chuyển đổi dữ liệu từ dict sang list dạng [index, date, time]
     table = []
-    for index, (key, value) in enumerate(data.items(), start=1):
-        timestamp = value['TimeStamp']
-        date, time = timestamp.split(" ")
+    for index, value in enumerate(data, start=1):
+
+        # timestamp = value['TimeStamp']
+        date, time = data[value].split(" ")
         table.append([index, date, time])
 
     return jsonify({"status": "success", "table": table})
